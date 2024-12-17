@@ -1,64 +1,62 @@
-package com.gustavo.mag_bank.domain;
+package com.gustavo.mag_bank.domain.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gustavo.mag_bank.domain.Cliente;
+import com.gustavo.mag_bank.domain.Conta;
 import com.gustavo.mag_bank.domain.enums.ClienteTipo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Entity
-public class Cliente implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class ClienteDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull(message = "O Campo nome é requerido.")
     private String nome;
+
     @Column(unique = true)
+    @NotNull(message = "Campo CPF é requerido.")
     private String cpf;
 
+    @NotNull(message = "Campo Data de nascimento é requerido.")
     @JsonFormat(pattern = "dd/MM/yyyy")
     private LocalDate dataNascimento;
 
+    @NotNull(message = "Campo senha é requerido.")
     private String senha;
 
+    @NotNull(message = "Campo email é requerido.")
     @Column(unique = true)
     private String email;
 
+    @NotNull(message = "Campo endereco é requerido.")
     private String endereco;
 
+    @NotNull(message = "Campo telefone é requerido.")
     private String telefone;
 
-    @OneToOne
-    @JoinColumn(name = "conta_id", referencedColumnName = "id")
-    private Conta conta;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "TIPO_CLIENTE")
+    private Integer conta;
+
+    @NotNull(message = "O campo Tipo de Cliente é requerido")
     private Set<Integer> clienteTipo = new HashSet<>();
 
-    public Cliente(Integer id, String cpf, LocalDate dataNascimento, String senha,
-                   String email, String endereco, String telefone, Conta conta, String nome) {
-        this.id = id;
-        this.cpf = cpf;
-        this.dataNascimento = dataNascimento;
-        this.senha = senha;
-        this.email = email;
-        this.endereco = endereco;
-        this.telefone = telefone;
-        this.conta = conta;
-        this.nome = nome;
-        addClienteTipo(ClienteTipo.NORMAL);
-    }
-
-    public Cliente() {
-
+    public ClienteDTO(Cliente obj) {
+        this.id = obj.getId();
+        this.cpf = obj.getCpf();
+        this.dataNascimento = obj.getDataNascimento();
+        this.senha = obj.getSenha();
+        this.email = obj.getEmail();
+        this.endereco = obj.getEndereco();
+        this.telefone = obj.getTelefone();
+        this.conta = obj.getConta().getId();
+        this.nome = obj.getNome();
+        addClienteTipo(ClienteTipo.ADMIN);
     }
 
     public String getNome() {
@@ -125,11 +123,11 @@ public class Cliente implements Serializable {
         this.telefone = telefone;
     }
 
-    public Conta getConta() {
+    public Integer getConta() {
         return conta;
     }
 
-    public void setConta(Conta conta) {
+    public void setConta(Integer conta) {
         this.conta = conta;
     }
 
@@ -137,21 +135,7 @@ public class Cliente implements Serializable {
         return clienteTipo.stream().map(x -> ClienteTipo.toEnum(x)).collect(Collectors.toSet());
     }
 
-    public void addClienteTipo(ClienteTipo tipo) {
-        this.clienteTipo.add(tipo.getCodigo());
+    public void addClienteTipo(ClienteTipo perfil) {
+        this.clienteTipo.add(perfil.getCodigo());
     }
-
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente pessoa = (Cliente) o;
-        return Objects.equals(id, pessoa.id) && Objects.equals(cpf, pessoa.cpf);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, cpf);
-    }
-
-
 }

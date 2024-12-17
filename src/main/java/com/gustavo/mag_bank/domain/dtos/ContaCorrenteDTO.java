@@ -1,40 +1,39 @@
 package com.gustavo.mag_bank.domain.dtos;
 
-import com.gustavo.mag_bank.domain.ContaPoupanca;
+import com.gustavo.mag_bank.domain.Cliente;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
+
 import java.io.Serializable;
 
-public class ContaPoupancaDTO implements Serializable {
+public class ContaCorrenteDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
 
     @NotNull(message = "Campo numero é requerido.")
+    @Column(unique = true)
     private String numero;
 
-    @NotNull(message = "Campo idCliente é requerido.")
+    @NotNull(message = "Campo cliente é requerido.")
+    private Cliente cliente;
+
+    @Column(name = "id_cliente")
     private Integer idCliente;
 
     @NotNull(message = "Campo saldo é requerido.")
     private Double saldo;
 
-    @NotNull(message = "Campo Taxa de Juros é requerido.")
-    private Double taxaJuros;
+    @NotNull(message = "Campo limite é requerido.")
+    private Double limite;
 
-    public ContaPoupancaDTO(Integer id, String numero, Integer idCliente, Double saldo, Double taxaJuros) {
+    public ContaCorrenteDTO(Integer id, String numero, Cliente cliente, Double saldo, Double limite) {
         this.id = id;
         this.numero = numero;
-        this.idCliente = idCliente;
+        this.cliente = cliente;
+        this.idCliente = cliente != null ? cliente.getId() : null;
         this.saldo = saldo;
-        this.taxaJuros = taxaJuros;
-    }
-
-    public ContaPoupancaDTO(ContaPoupanca obj) {
-        this.id = obj.getId();
-        this.numero = obj.getNumero();
-        this.idCliente = obj.getIdCliente();
-        this.saldo = obj.getSaldo();
-        this.taxaJuros = obj.getTaxaJuros();
+        this.limite = limite;
     }
 
     public Integer getId() {
@@ -53,6 +52,14 @@ public class ContaPoupancaDTO implements Serializable {
         this.numero = numero;
     }
 
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
     public Integer getIdCliente() {
         return idCliente;
     }
@@ -69,11 +76,11 @@ public class ContaPoupancaDTO implements Serializable {
         this.saldo = saldo;
     }
 
-    public Double getTaxaJuros() {
-        return taxaJuros;
+    public Double getLimite() {
+        return limite;
     }
 
-    public void setTaxaJuros(Double taxaJuros) {
-        this.taxaJuros = taxaJuros;
+    public void setLimite(Double limite) {
+        this.limite = limite;
     }
 }

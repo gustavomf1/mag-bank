@@ -1,5 +1,6 @@
 package com.gustavo.mag_bank.domain;
 
+import com.gustavo.mag_bank.domain.dtos.ContaPoupancaDTO;
 import jakarta.persistence.Entity;
 
 @Entity
@@ -8,6 +9,11 @@ public class ContaPoupanca  extends Conta{
     private Double taxaJuros;
 
     public ContaPoupanca() {
+    }
+
+    public ContaPoupanca(ContaPoupancaDTO dto, Cliente cliente) {
+        super(dto.getId(), dto.getNumero(), cliente, dto.getSaldo());
+        this.taxaJuros = dto.getTaxaJuros();
     }
 
     public ContaPoupanca(Double taxaJuros) {
