@@ -10,8 +10,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.util.Arrays;
-
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -22,15 +20,9 @@ public class SecurityConfig {
     @Autowired
     private Environment env;
 
-    private static final String[] PUBLIC_MATCHERS = {
-            "/login",
-            "/register",
-            "/h2-console/**" // Caso utilize o H2 em ambiente de teste
-    };
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        if (Arrays.stream(env.getActiveProfiles()).anyMatch("test"::equals)) {
+        if (env.acceptsProfiles("test")) {
             http.headers(headers -> headers.frameOptions(frameOptions -> frameOptions.sameOrigin()));
         }
 
@@ -38,10 +30,9 @@ public class SecurityConfig {
                 .cors(withDefaults()) // Habilita o CORS com configurações padrão
                 .csrf(csrf -> csrf.disable()) // Desabilita o CSRF
                 .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Configura a política de sessão como Stateless
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // Configura política Stateless
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_MATCHERS).permitAll() // Configura os endpoints públicos
-                        .anyRequest().authenticated()); // Todas as outras requisições devem ser autenticadas
+                        .anyRequest().permitAll()); // Permite acesso a todos os endpoints
 
         return http.build();
     }

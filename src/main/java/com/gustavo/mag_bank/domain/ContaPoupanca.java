@@ -8,7 +8,19 @@ public class ContaPoupanca  extends Conta{
 
     private Double taxaJuros;
 
-    public ContaPoupanca() {
+    public ContaPoupanca(){}
+
+    public ContaPoupanca(ContaPoupancaDTO obj) {
+        this.id = obj.getId();
+        this.saldo = obj.getSaldo();
+        this.numero = obj.getNumero();
+        this.idCliente = obj.getIdCliente();
+        this.taxaJuros = obj.getTaxaJuros();
+    }
+
+    public ContaPoupanca(Integer id, String numero, Cliente cliente, Double saldo, Double taxaJuros) {
+        super(id, numero, cliente, saldo);
+        this.taxaJuros = taxaJuros;
     }
 
     public ContaPoupanca(ContaPoupancaDTO dto, Cliente cliente) {
@@ -20,10 +32,7 @@ public class ContaPoupanca  extends Conta{
         this.taxaJuros = taxaJuros;
     }
 
-    public ContaPoupanca(Integer id, String numero, Cliente cliente, Double saldo, Double taxaJuros) {
-        super(id, numero, cliente, saldo);
-        this.taxaJuros = taxaJuros;
-    }
+
 
     public Double getTaxaJuros() {
         return taxaJuros;

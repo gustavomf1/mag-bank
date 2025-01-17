@@ -1,16 +1,11 @@
 package com.gustavo.mag_bank.domain;
 
-import com.gustavo.mag_bank.domain.enums.ClienteTipo;
 import com.gustavo.mag_bank.domain.enums.TransacaoTipo;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 public class Transacao implements Serializable {
@@ -25,25 +20,27 @@ public class Transacao implements Serializable {
     private LocalDateTime data;
 
     @ManyToOne
-    @JoinColumn(name = "conta_origem_id")
+    @JoinColumn(name = "conta_origem_id") // Define a chave estrangeira no banco
     private Conta contaOrigem;
 
     @ManyToOne
-    @JoinColumn(name = "conta_destino_id")
+    @JoinColumn(name = "conta_destino_id") // Define a chave estrangeira no banco
     private Conta contaDestino;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "TIPO_TRANSACAO")
-    private Set<Integer> transacaoTipo = new HashSet<>();
+    @Enumerated(EnumType.STRING) // Armazena o nome da constante no banco
+    @Column(name = "tipo")
+    private TransacaoTipo transacaoTipo;
 
     public Transacao() {
     }
 
-    public Transacao(Double valor, Conta conta, Integer contaOrigemId, Integer contaDestinoId) {
+    public Transacao(Integer id, Double valor, Conta contaOrigem, Conta contaDestino, TransacaoTipo transacaoTipo) {
+        this.id = id;
         this.valor = valor;
-        this.data = LocalDateTime.now();
+        this.data = LocalDateTime.now(); // Atribui a data atual automaticamente
         this.contaOrigem = contaOrigem;
         this.contaDestino = contaDestino;
+        this.transacaoTipo = transacaoTipo;
     }
 
     public Integer getId() {
@@ -86,26 +83,12 @@ public class Transacao implements Serializable {
         this.contaDestino = contaDestino;
     }
 
-    public Set<TransacaoTipo> getTransacaoTipo() {
-        return transacaoTipo.stream().map(x -> TransacaoTipo.toEnum(x)).collect(Collectors.toSet());
+    public TransacaoTipo getTransacaoTipo() {
+        return transacaoTipo;
     }
 
-    public void addTransacaoTipo(TransacaoTipo tipo) {
-        this.transacaoTipo.add(tipo.getCodigo());
-    }
-
-    public boolean executarTransacao(){
-        if (contaOrigem.getSaldo() >= valor) {
-            // Subtrair da conta de origem
-            contaOrigem.setSaldo(contaOrigem.getSaldo() - valor);
-
-            // Adicionar na conta de destino
-            contaDestino.setSaldo(contaDestino.getSaldo() + valor);
-
-            return true;
-        } else {
-            return false;
-        }
+    public void setTransacaoTipo(TransacaoTipo transacaoTipo) {
+        this.transacaoTipo = transacaoTipo;
     }
 
     @Override
@@ -120,5 +103,4 @@ public class Transacao implements Serializable {
     public int hashCode() {
         return Objects.hash(id);
     }
-
 }

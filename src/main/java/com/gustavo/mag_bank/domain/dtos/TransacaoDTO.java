@@ -7,9 +7,6 @@ import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class TransacaoDTO implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -29,7 +26,7 @@ public class TransacaoDTO implements Serializable {
     private Integer contaDestino;
 
 
-    private Set<Integer> transacaoTipo = new HashSet<>();
+    private TransacaoTipo transacaoTipo;
 
 
     public TransacaoDTO(Transacao obj){
@@ -37,7 +34,7 @@ public class TransacaoDTO implements Serializable {
         this.valor = obj.getValor();
         this.contaOrigem = obj.getContaOrigem().getId();
         this.contaDestino = obj.getContaDestino().getId();
-        this.transacaoTipo = obj.getTransacaoTipo().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+        this.transacaoTipo = obj.getTransacaoTipo();
         this.data = obj.getData();
     }
 
@@ -81,11 +78,11 @@ public class TransacaoDTO implements Serializable {
         this.contaDestino = contaDestino;
     }
 
-    public Set<TransacaoTipo> getTransacaoTipo() {
-        return transacaoTipo.stream().map(x -> TransacaoTipo.toEnum(x)).collect(Collectors.toSet());
+    public TransacaoTipo getTransacaoTipo() {
+        return transacaoTipo;
     }
 
-    public void addTransacaoTipo(TransacaoTipo tipo) {
-        this.transacaoTipo.add(tipo.getCodigo());
+    public void setTransacaoTipo(TransacaoTipo transacaoTipo) {
+        this.transacaoTipo = transacaoTipo;
     }
 }

@@ -1,25 +1,28 @@
 package com.gustavo.mag_bank.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 public abstract class Conta {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    protected Integer id;
 
     @Column(unique = true)
-    private String numero;
+    protected String numero;
 
+    @JsonIgnore
     @OneToOne(mappedBy = "conta")
-    private Cliente cliente;
+    protected Cliente cliente;
 
     @Column(name = "id_cliente")
-    private Integer idCliente;
+    protected Integer idCliente;
 
-    private Double saldo;
+    protected Double saldo;
 
     public Conta() {}
 
@@ -28,7 +31,7 @@ public abstract class Conta {
         this.numero = numero;
         this.cliente = cliente;
         this.saldo = saldo;
-        this.idCliente = cliente != null ? cliente.getId() : null;
+        this.idCliente = cliente.getId();
     }
 
     public Integer getId() {

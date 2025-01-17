@@ -1,11 +1,13 @@
-package com.gustavo.mag_bank.service;
+package com.gustavo.mag_bank.services;
 
 import com.gustavo.mag_bank.domain.ContaPoupanca;
+import com.gustavo.mag_bank.domain.dtos.ContaPoupancaDTO;
 import com.gustavo.mag_bank.repositories.PoupancaRepository;
 import com.gustavo.mag_bank.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,5 +18,21 @@ public class PoupancaService {
         Optional<ContaPoupanca> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Objeto não econtrado! ID: " + id));
     }
+
+    public List<ContaPoupanca> findAll(){return repository.findAll();}
+
+    public ContaPoupanca create(ContaPoupancaDTO objDTO){
+        objDTO.setId(null);
+        ContaPoupanca newObj = new ContaPoupanca(objDTO);
+        return repository.save(newObj);
+    }
+
+    public ContaPoupanca update(Integer id, ContaPoupancaDTO objDTO){
+        objDTO.setId(id);
+        ContaPoupanca oldObj = findById(id);
+        ContaPoupanca updatedObj = new ContaPoupanca(objDTO);
+        return repository.save(updatedObj);
+    }
+
 
 }

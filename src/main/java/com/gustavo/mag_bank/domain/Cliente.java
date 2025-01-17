@@ -6,10 +6,7 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -20,6 +17,7 @@ public class Cliente implements Serializable {
     private Integer id;
 
     private String nome;
+
     @Column(unique = true)
     private String cpf;
 
@@ -39,26 +37,35 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "conta_id", referencedColumnName = "id")
     private Conta conta;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "TIPO_CLIENTE")
-    private Set<Integer> clienteTipo = new HashSet<>();
+    @Enumerated(EnumType.STRING) // Persistirá como string no banco de dados
+    @Column(name = "tipo_cliente")
+    private ClienteTipo clienteTipo;
 
-    public Cliente(Integer id, String cpf, LocalDate dataNascimento, String senha,
-                   String email, String endereco, String telefone, Conta conta, String nome) {
-        this.id = id;
+    public Cliente() {
+        // Inicializa o tipo de cliente como NORMAL por padrão
+        this.clienteTipo = ClienteTipo.NORMAL;
+    }
+
+    public Cliente(String cpf, LocalDate dataNascimento, String senha,
+                   String email, String endereco, String telefone, String nome) {
         this.cpf = cpf;
         this.dataNascimento = dataNascimento;
         this.senha = senha;
         this.email = email;
         this.endereco = endereco;
         this.telefone = telefone;
-        this.conta = conta;
         this.nome = nome;
-        addClienteTipo(ClienteTipo.NORMAL);
+        this.clienteTipo = clienteTipo != null ? clienteTipo : ClienteTipo.NORMAL;
     }
 
-    public Cliente() {
+    // Getters e Setters
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -67,14 +74,6 @@ public class Cliente implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public String getCpf() {
@@ -133,25 +132,24 @@ public class Cliente implements Serializable {
         this.conta = conta;
     }
 
-    public Set<ClienteTipo> getClienteTipo() {
-        return clienteTipo.stream().map(x -> ClienteTipo.toEnum(x)).collect(Collectors.toSet());
+    public ClienteTipo getClienteTipo() {
+        return clienteTipo;
     }
 
-    public void addClienteTipo(ClienteTipo tipo) {
-        this.clienteTipo.add(tipo.getCodigo());
+    public void setClienteTipo(ClienteTipo clienteTipo) {
+        this.clienteTipo = clienteTipo;
     }
 
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Cliente pessoa = (Cliente) o;
-        return Objects.equals(id, pessoa.id) && Objects.equals(cpf, pessoa.cpf);
+        Cliente cliente = (Cliente) o;
+        return Objects.equals(id, cliente.id) && Objects.equals(cpf, cliente.cpf);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, cpf);
     }
-
-
 }
