@@ -5,7 +5,9 @@ import com.gustavo.mag_bank.domain.Cliente;
 import com.gustavo.mag_bank.domain.Conta;
 import com.gustavo.mag_bank.domain.enums.ClienteTipo;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -21,6 +23,7 @@ public class ClienteDTO {
 
     @Column(unique = true)
     @NotNull(message = "Campo CPF é requerido.")
+    @CPF
     private String cpf;
 
     @NotNull(message = "Campo Data de nascimento é requerido.")
@@ -30,8 +33,10 @@ public class ClienteDTO {
     @NotNull(message = "Campo senha é requerido.")
     private String senha;
 
+
     @NotNull(message = "Campo email é requerido.")
     @Column(unique = true)
+    @Email
     private String email;
 
     @NotNull(message = "Campo endereco é requerido.")
@@ -54,7 +59,7 @@ public class ClienteDTO {
         this.email = obj.getEmail();
         this.endereco = obj.getEndereco();
         this.telefone = obj.getTelefone();
-        this.conta = obj.getConta().getId();
+        this.conta = obj.getConta() != null ? obj.getConta().getId() : null;
         this.nome = obj.getNome();
         addClienteTipo(ClienteTipo.ADMIN);
     }

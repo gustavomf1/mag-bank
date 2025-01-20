@@ -30,9 +30,33 @@ public class PoupancaService {
     public ContaPoupanca update(Integer id, ContaPoupancaDTO objDTO){
         objDTO.setId(id);
         ContaPoupanca oldObj = findById(id);
+        existeId(objDTO);
         ContaPoupanca updatedObj = new ContaPoupanca(objDTO);
         return repository.save(updatedObj);
     }
+
+    public void delete(Integer id){
+        ContaPoupanca obj = findById(id);
+        permitirDeletar(obj);
+        repository.deleteById(id);
+    }
+
+    private void existeId(ContaPoupancaDTO objDTO){
+        if(objDTO == null){
+            throw new ObjectNotFoundException("Objeto não econtrado! ID: " + objDTO.getId());
+        }
+    }
+
+    private void permitirDeletar(ContaPoupanca objDTO){
+        if(objDTO.getSaldo() < 0){
+            throw new RuntimeException("Não é possível deletar a conta com saldo negativo.");
+        }
+
+        if(objDTO.getSaldo() > 0){
+            throw new RuntimeException("Não é possível deletar a conta com saldo.");
+        }
+    }
+
 
 
 }
