@@ -1,12 +1,14 @@
 package com.gustavo.mag_bank.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.gustavo.mag_bank.domain.dtos.ClienteDTO;
 import com.gustavo.mag_bank.domain.enums.ClienteTipo;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Cliente implements Serializable {
@@ -41,11 +43,11 @@ public class Cliente implements Serializable {
     @Column(name = "tipo_cliente")
     private ClienteTipo clienteTipo;
 
+    // Construtor padrão para inicializar o tipo de cliente como NORMAL por padrão
     public Cliente() {
-        // Inicializa o tipo de cliente como NORMAL por padrão
-        this.clienteTipo = ClienteTipo.NORMAL;
     }
 
+    // Construtor com campos essenciais, inicializando o tipo de cliente com valor passado ou padrão
     public Cliente(String cpf, LocalDate dataNascimento, String senha,
                    String email, String endereco, String telefone, String nome) {
         this.cpf = cpf;
@@ -58,7 +60,34 @@ public class Cliente implements Serializable {
         this.clienteTipo = clienteTipo != null ? clienteTipo : ClienteTipo.NORMAL;
     }
 
-    // Getters e Setters
+    // Construtor para inicializar com DTO
+    public Cliente(ClienteDTO objDTO) {
+        this.id = objDTO.getId();
+        this.nome = objDTO.getNome();
+        this.cpf = objDTO.getCpf();
+        this.dataNascimento = objDTO.getDataNascimento();
+        this.senha = objDTO.getSenha();
+        this.email = objDTO.getEmail();
+        this.endereco = objDTO.getEndereco();
+        this.telefone = objDTO.getTelefone();
+    }
+
+    // Construtor completo para inicializar todas as propriedades
+    public Cliente(Integer id, String nome, String cpf, LocalDate dataNascimento,
+                   String senha, String email, String endereco, String telefone,
+                   Conta conta) {
+        this.id = id;
+        this.nome = nome;
+        this.cpf = cpf;
+        this.dataNascimento = dataNascimento;
+        this.senha = senha;
+        this.email = email;
+        this.endereco = endereco;
+        this.telefone = telefone;
+        this.conta = conta;
+    }
+
+    // Métodos Getters e Setters
 
     public Integer getId() {
         return id;
@@ -138,6 +167,11 @@ public class Cliente implements Serializable {
 
     public void setClienteTipo(ClienteTipo clienteTipo) {
         this.clienteTipo = clienteTipo;
+    }
+
+    // Método privado para obter o cliente tipo ou o padrão caso seja nulo ou vazio
+    private ClienteTipo getClienteTipoOrDefault(Set<ClienteTipo> clienteTipo) {
+        return clienteTipo != null && !clienteTipo.isEmpty() ? clienteTipo.iterator().next() : ClienteTipo.NORMAL;
     }
 
     @Override

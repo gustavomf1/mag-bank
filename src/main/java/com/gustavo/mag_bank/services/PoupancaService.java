@@ -30,7 +30,6 @@ public class PoupancaService {
     public ContaPoupanca update(Integer id, ContaPoupancaDTO objDTO){
         objDTO.setId(id);
         ContaPoupanca oldObj = findById(id);
-        existeId(objDTO);
         ContaPoupanca updatedObj = new ContaPoupanca(objDTO);
         return repository.save(updatedObj);
     }
@@ -41,11 +40,6 @@ public class PoupancaService {
         repository.deleteById(id);
     }
 
-    private void existeId(ContaPoupancaDTO objDTO){
-        if(objDTO == null){
-            throw new ObjectNotFoundException("Objeto não econtrado! ID: " + objDTO.getId());
-        }
-    }
 
     private void permitirDeletar(ContaPoupanca objDTO){
         if(objDTO.getSaldo() < 0){

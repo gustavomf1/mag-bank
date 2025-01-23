@@ -23,7 +23,6 @@ public class ClienteDTO {
 
     @Column(unique = true)
     @NotNull(message = "Campo CPF é requerido.")
-    @CPF
     private String cpf;
 
     @NotNull(message = "Campo Data de nascimento é requerido.")
@@ -51,6 +50,8 @@ public class ClienteDTO {
     @NotNull(message = "O campo Tipo de Cliente é requerido")
     private Set<Integer> clienteTipo = new HashSet<>();
 
+    public ClienteDTO(){}
+
     public ClienteDTO(Cliente obj) {
         this.id = obj.getId();
         this.cpf = obj.getCpf();
@@ -61,7 +62,7 @@ public class ClienteDTO {
         this.telefone = obj.getTelefone();
         this.conta = obj.getConta() != null ? obj.getConta().getId() : null;
         this.nome = obj.getNome();
-        addClienteTipo(ClienteTipo.ADMIN);
+        this.clienteTipo = obj.getClienteTipo() != null ? Set.of(obj.getClienteTipo().getCodigo()) : Set.of(ClienteTipo.NORMAL.getCodigo());
     }
 
     public String getNome() {
