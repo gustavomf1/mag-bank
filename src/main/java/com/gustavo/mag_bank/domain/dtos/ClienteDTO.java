@@ -2,12 +2,10 @@ package com.gustavo.mag_bank.domain.dtos;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.gustavo.mag_bank.domain.Cliente;
-import com.gustavo.mag_bank.domain.Conta;
 import com.gustavo.mag_bank.domain.enums.ClienteTipo;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
-import org.hibernate.validator.constraints.br.CPF;
 
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -62,7 +60,7 @@ public class ClienteDTO {
         this.telefone = obj.getTelefone();
         this.conta = obj.getConta() != null ? obj.getConta().getId() : null;
         this.nome = obj.getNome();
-        this.clienteTipo = obj.getClienteTipo() != null ? Set.of(obj.getClienteTipo().getCodigo()) : Set.of(ClienteTipo.NORMAL.getCodigo());
+        this.clienteTipo = obj.getClienteTipo().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
     }
 
     public String getNome() {

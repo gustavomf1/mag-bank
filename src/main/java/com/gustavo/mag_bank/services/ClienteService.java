@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
@@ -65,10 +66,16 @@ public class ClienteService {
                 objDTO.getEmail(),
                 objDTO.getEndereco(),
                 objDTO.getTelefone(),
-                poupanca != null ? poupanca : corrente
+                poupanca != null ? poupanca : corrente,
+                objDTO.getClienteTipo().stream().map(ClienteTipo::getCodigo).collect(Collectors.toSet())
         );
 
         return repository.save(oldObj);
+    }
+
+    public void delete(Integer id){
+        Cliente obj = findById(id);
+        repository.deleteById(id);
     }
 }
 

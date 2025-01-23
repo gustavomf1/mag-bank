@@ -7,8 +7,10 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Cliente implements Serializable {
@@ -39,9 +41,9 @@ public class Cliente implements Serializable {
     @JoinColumn(name = "conta_id", referencedColumnName = "id")
     private Conta conta;
 
-    @Enumerated(EnumType.STRING) // Persistirá como string no banco de dados
+    @ElementCollection(fetch = FetchType.EAGER)
     @Column(name = "tipo_cliente")
-    private ClienteTipo clienteTipo;
+    private Set<Integer> clienteTipo = new HashSet<>();
 
     // Construtor padrão para inicializar o tipo de cliente como NORMAL por padrão
     public Cliente() {
@@ -57,7 +59,7 @@ public class Cliente implements Serializable {
         this.endereco = endereco;
         this.telefone = telefone;
         this.nome = nome;
-        this.clienteTipo = clienteTipo != null ? clienteTipo : ClienteTipo.NORMAL;
+
     }
 
     // Construtor para inicializar com DTO
@@ -70,12 +72,12 @@ public class Cliente implements Serializable {
         this.email = objDTO.getEmail();
         this.endereco = objDTO.getEndereco();
         this.telefone = objDTO.getTelefone();
+        this.clienteTipo = objDTO.getClienteTipo().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
     }
 
-    // Construtor completo para inicializar todas as propriedades
     public Cliente(Integer id, String nome, String cpf, LocalDate dataNascimento,
                    String senha, String email, String endereco, String telefone,
-                   Conta conta) {
+                   Conta conta, Set<Integer> clienteTipo) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -85,6 +87,7 @@ public class Cliente implements Serializable {
         this.endereco = endereco;
         this.telefone = telefone;
         this.conta = conta;
+        this.clienteTipo = clienteTipo;
     }
 
     // Métodos Getters e Setters
@@ -161,12 +164,12 @@ public class Cliente implements Serializable {
         this.conta = conta;
     }
 
-    public ClienteTipo getClienteTipo() {
-        return clienteTipo;
+    public Set<ClienteTipo> getClienteTipo() {
+        return clienteTipo.stream().map(x -> ClienteTipo.toEnum(x)).collect(Collectors.toSet());
     }
 
-    public void setClienteTipo(ClienteTipo clienteTipo) {
-        this.clienteTipo = clienteTipo;
+    public void addClienteTipo(ClienteTipo clienteTipo) {
+        this.clienteTipo.add(clienteTipo.getCodigo());
     }
 
     // Método privado para obter o cliente tipo ou o padrão caso seja nulo ou vazio
