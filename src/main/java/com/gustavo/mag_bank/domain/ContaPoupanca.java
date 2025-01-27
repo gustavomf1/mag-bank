@@ -42,18 +42,5 @@ public class ContaPoupanca  extends Conta{
         this.taxaJuros = taxaJuros;
     }
 
-    @Override
-    public void sacar(Double valor){
-        Double saldo = getSaldo();
-        Double a;
-        if(valor <= saldo){
-            a = saldo * taxaJuros;
-            saldo -= a;
-            setSaldo(saldo);
-        }
-        else{
-            throw new IllegalArgumentException("Quantia inválida! O valor do saque excede o montante disponível.");
-        }
-    }
 
 }

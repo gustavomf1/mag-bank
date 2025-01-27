@@ -42,6 +42,7 @@ public class DBService {
 
         ContaCorrente contaCorrente = new ContaCorrente(null, "188390203", cli2, 333333.22, 10.0);
 
+
         poupancaRepository.saveAll(Arrays.asList(contaPoupanca));
         correnteRepository.saveAll(Arrays.asList(contaCorrente));
 
@@ -50,6 +51,8 @@ public class DBService {
 
         transacaoRepository.saveAll(Arrays.asList(transacao1));
 
+        System.out.println(contaPoupanca);
+        System.out.println(contaCorrente.getCliente());
         System.out.println("Banco de dados populado com sucesso!");
     }
 

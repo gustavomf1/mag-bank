@@ -1,5 +1,6 @@
 package com.gustavo.mag_bank.domain.dtos;
 
+import com.gustavo.mag_bank.domain.ContaCorrente;
 import com.gustavo.mag_bank.domain.ContaPoupanca;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;

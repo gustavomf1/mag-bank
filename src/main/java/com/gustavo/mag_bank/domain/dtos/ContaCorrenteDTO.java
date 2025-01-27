@@ -1,6 +1,7 @@
 package com.gustavo.mag_bank.domain.dtos;
 
 import com.gustavo.mag_bank.domain.Cliente;
+import com.gustavo.mag_bank.domain.ContaCorrente;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 
@@ -12,11 +13,7 @@ public class ContaCorrenteDTO implements Serializable {
     private Integer id;
 
     @NotNull(message = "Campo numero é requerido.")
-    @Column(unique = true)
     private String numero;
-
-    @NotNull(message = "Campo cliente é requerido.")
-    private Cliente cliente;
 
     @Column(name = "id_cliente")
     private Integer idCliente;
@@ -27,13 +24,20 @@ public class ContaCorrenteDTO implements Serializable {
     @NotNull(message = "Campo limite é requerido.")
     private Double limite;
 
-    public ContaCorrenteDTO(Integer id, String numero, Cliente cliente, Double saldo, Double limite) {
+    public ContaCorrenteDTO(Integer id, String numero, Double saldo, Double limite, Integer idCliente) {
         this.id = id;
         this.numero = numero;
-        this.cliente = cliente;
-        this.idCliente = cliente != null ? cliente.getId() : null;
+        this.idCliente = idCliente;
         this.saldo = saldo;
         this.limite = limite;
+    }
+
+    public ContaCorrenteDTO(ContaCorrente obj) {
+        this.id = obj.getId();
+        this.numero = obj.getNumero();
+        this.idCliente = obj.getIdCliente();
+        this.saldo = obj.getSaldo();
+        this.limite = obj.getLimite();
     }
 
     public Integer getId() {
@@ -50,14 +54,6 @@ public class ContaCorrenteDTO implements Serializable {
 
     public void setNumero(String numero) {
         this.numero = numero;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
     }
 
     public Integer getIdCliente() {
