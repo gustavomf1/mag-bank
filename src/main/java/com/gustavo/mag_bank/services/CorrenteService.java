@@ -27,5 +27,20 @@ public class CorrenteService {
         ContaCorrente newObj = new ContaCorrente(objDTO);
         return repository.save(newObj);
     }
+
+    public ContaCorrente update(Integer id, ContaCorrenteDTO objDTO){
+        objDTO.setId(id);
+
+        ContaCorrente oldObj = findById(id);
+        ContaCorrente updateObj = new ContaCorrente(objDTO);
+
+        return repository.save(updateObj);
+    }
+
+    public void delete(Integer id){
+        ContaCorrente obj = findById(id);
+        repository.deleteById(id);
+    }
+
 }
 

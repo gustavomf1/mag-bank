@@ -50,10 +50,6 @@ public class DBService {
 
 
         transacaoRepository.saveAll(Arrays.asList(transacao1));
-
-        System.out.println(contaPoupanca);
-        System.out.println(contaCorrente.getCliente());
-        System.out.println("Banco de dados populado com sucesso!");
     }
 
 

@@ -39,4 +39,19 @@ public class CorrenteController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
+
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<ContaCorrenteDTO> update(@PathVariable Integer id, @Valid @RequestBody ContaCorrenteDTO objDTO){
+        ContaCorrente newObj = service.update(id, objDTO);
+        return ResponseEntity.ok().body(new ContaCorrenteDTO(newObj));
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<ContaCorrenteDTO> delete(@PathVariable Integer id){
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }
