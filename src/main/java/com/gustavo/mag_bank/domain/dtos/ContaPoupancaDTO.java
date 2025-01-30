@@ -1,6 +1,5 @@
 package com.gustavo.mag_bank.domain.dtos;
 
-import com.gustavo.mag_bank.domain.ContaCorrente;
 import com.gustavo.mag_bank.domain.ContaPoupanca;
 import jakarta.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -33,9 +32,9 @@ public class ContaPoupancaDTO implements Serializable {
     public ContaPoupancaDTO(ContaPoupanca obj) {
         this.id = obj.getId();
         this.numero = obj.getNumero();
-        this.idCliente = obj.getIdCliente();
         this.saldo = obj.getSaldo();
         this.taxaJuros = obj.getTaxaJuros();
+        this.idCliente = obj.getCliente().getId();
     }
 
     public Integer getId() {

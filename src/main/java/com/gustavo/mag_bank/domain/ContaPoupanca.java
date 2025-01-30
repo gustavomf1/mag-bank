@@ -4,19 +4,12 @@ import com.gustavo.mag_bank.domain.dtos.ContaPoupancaDTO;
 import jakarta.persistence.Entity;
 
 @Entity
-public class ContaPoupanca  extends Conta{
+public class ContaPoupanca extends Conta {
 
     private Double taxaJuros;
 
-    public ContaPoupanca(){}
+    public ContaPoupanca() {}
 
-    public ContaPoupanca(ContaPoupancaDTO obj) {
-        this.id = obj.getId();
-        this.saldo = obj.getSaldo();
-        this.numero = obj.getNumero();
-        this.idCliente = obj.getIdCliente();
-        this.taxaJuros = obj.getTaxaJuros();
-    }
 
     public ContaPoupanca(Integer id, String numero, Cliente cliente, Double saldo, Double taxaJuros) {
         super(id, numero, cliente, saldo);
@@ -32,8 +25,6 @@ public class ContaPoupanca  extends Conta{
         this.taxaJuros = taxaJuros;
     }
 
-
-
     public Double getTaxaJuros() {
         return taxaJuros;
     }
@@ -41,6 +32,4 @@ public class ContaPoupanca  extends Conta{
     public void setTaxaJuros(Double taxaJuros) {
         this.taxaJuros = taxaJuros;
     }
-
-
 }

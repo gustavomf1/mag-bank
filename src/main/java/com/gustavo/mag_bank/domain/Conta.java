@@ -16,11 +16,9 @@ public abstract class Conta {
     protected String numero;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "conta")
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
     protected Cliente cliente;
-
-    @Column(name = "id_cliente")
-    protected Integer idCliente;
 
     protected Double saldo;
 
@@ -31,7 +29,6 @@ public abstract class Conta {
         this.numero = numero;
         this.cliente = cliente;
         this.saldo = saldo;
-        this.idCliente = cliente.getId();
     }
 
     public Integer getId() {
@@ -56,15 +53,6 @@ public abstract class Conta {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-        this.idCliente = cliente != null ? cliente.getId() : null;
-    }
-
-    public Integer getIdCliente() {
-        return idCliente;
-    }
-
-    public void setIdCliente(Integer idCliente) {
-        this.idCliente = idCliente;
     }
 
     public Double getSaldo() {

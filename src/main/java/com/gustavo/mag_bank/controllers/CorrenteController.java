@@ -2,7 +2,6 @@ package com.gustavo.mag_bank.controllers;
 
 import com.gustavo.mag_bank.domain.ContaCorrente;
 import com.gustavo.mag_bank.domain.dtos.ContaCorrenteDTO;
-import com.gustavo.mag_bank.domain.dtos.ContaPoupancaDTO;
 import com.gustavo.mag_bank.services.CorrenteService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,6 @@
 package com.gustavo.mag_bank.domain.dtos;
 
-import com.gustavo.mag_bank.domain.Cliente;
 import com.gustavo.mag_bank.domain.ContaCorrente;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
@@ -15,14 +13,13 @@ public class ContaCorrenteDTO implements Serializable {
     @NotNull(message = "Campo numero é requerido.")
     private String numero;
 
-    @Column(name = "id_cliente")
-    private Integer idCliente;
-
     @NotNull(message = "Campo saldo é requerido.")
     private Double saldo;
 
     @NotNull(message = "Campo limite é requerido.")
     private Double limite;
+
+    private Integer idCliente;
 
     public ContaCorrenteDTO(Integer id, String numero, Double saldo, Double limite, Integer idCliente) {
         this.id = id;
@@ -35,9 +32,9 @@ public class ContaCorrenteDTO implements Serializable {
     public ContaCorrenteDTO(ContaCorrente obj) {
         this.id = obj.getId();
         this.numero = obj.getNumero();
-        this.idCliente = obj.getIdCliente();
         this.saldo = obj.getSaldo();
         this.limite = obj.getLimite();
+        this.idCliente = obj.getCliente() != null ? obj.getCliente().getId() : null;
     }
 
     public Integer getId() {
