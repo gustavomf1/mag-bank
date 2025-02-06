@@ -13,7 +13,7 @@ public abstract class Conta {
     protected Integer id;
 
     @Column(unique = true)
-    protected String numero;
+    protected Long numero;
 
     @JsonIgnore
     @ManyToOne
@@ -24,7 +24,7 @@ public abstract class Conta {
 
     public Conta() {}
 
-    public Conta(Integer id, String numero, Cliente cliente, Double saldo) {
+    public Conta(Integer id, Long numero, Cliente cliente, Double saldo) {
         this.id = id;
         this.numero = numero;
         this.cliente = cliente;
@@ -39,11 +39,11 @@ public abstract class Conta {
         this.id = id;
     }
 
-    public String getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
 

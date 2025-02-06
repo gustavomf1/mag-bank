@@ -38,9 +38,9 @@ public class DBService {
 
         clienteRepository.saveAll(Arrays.asList(cli1, cli2));
 
-        ContaPoupanca contaPoupanca = new ContaPoupanca(null, "12345667", cli1, 1200.25, 10.0);
+        ContaPoupanca contaPoupanca = new ContaPoupanca(null, 123452323L, cli1, 1200.25, 10.0);
 
-        ContaCorrente contaCorrente = new ContaCorrente(null, "188390203", cli2, 333333.22, 10.0);
+        ContaCorrente contaCorrente = new ContaCorrente(null, 188390203L, cli2, 333333.22, 10.0);
 
 
         poupancaRepository.saveAll(Arrays.asList(contaPoupanca));

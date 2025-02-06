@@ -15,7 +15,7 @@ public class ContaCorrente extends Conta {
         this.limite = dto.getLimite();
     }
 
-    public ContaCorrente(Integer id, String numero, Cliente cliente, Double saldo, Double limite) {
+    public ContaCorrente(Integer id, Long numero, Cliente cliente, Double saldo, Double limite) {
         super(id, numero, cliente, saldo);
         this.limite = limite;
     }

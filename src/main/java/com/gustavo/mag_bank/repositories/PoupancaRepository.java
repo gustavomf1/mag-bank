@@ -8,4 +8,5 @@ import java.util.Optional;
 
 public interface PoupancaRepository extends JpaRepository<ContaPoupanca, Integer> {
     Optional<ContaPoupanca> findByClienteId(Integer clienteId);
+    boolean existsByNumero(Long numero);
 }

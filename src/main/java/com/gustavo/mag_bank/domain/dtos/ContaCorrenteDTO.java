@@ -11,7 +11,7 @@ public class ContaCorrenteDTO implements Serializable {
     private Integer id;
 
     @NotNull(message = "Campo numero é requerido.")
-    private String numero;
+    private Long numero;
 
     @NotNull(message = "Campo saldo é requerido.")
     private Double saldo;
@@ -21,7 +21,7 @@ public class ContaCorrenteDTO implements Serializable {
 
     private Integer idCliente;
 
-    public ContaCorrenteDTO(Integer id, String numero, Double saldo, Double limite, Integer idCliente) {
+    public ContaCorrenteDTO(Integer id, Long numero, Double saldo, Double limite, Integer idCliente) {
         this.id = id;
         this.numero = numero;
         this.idCliente = idCliente;
@@ -45,11 +45,11 @@ public class ContaCorrenteDTO implements Serializable {
         this.id = id;
     }
 
-    public String getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
 

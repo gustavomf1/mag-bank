@@ -7,4 +7,5 @@ import java.util.Optional;
 
 public interface CorrenteRepository extends JpaRepository<ContaCorrente, Integer> {
     Optional<ContaCorrente> findByClienteId(Integer clienteId);
+    boolean existsByNumero(Long numero);
 }

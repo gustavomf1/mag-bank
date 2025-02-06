@@ -10,7 +10,7 @@ public class ContaPoupancaDTO implements Serializable {
     private Integer id;
 
     @NotNull(message = "Campo numero é requerido.")
-    private String numero;
+    private Long numero;
 
     @NotNull(message = "Campo idCliente é requerido.")
     private Integer idCliente;
@@ -21,7 +21,7 @@ public class ContaPoupancaDTO implements Serializable {
     @NotNull(message = "Campo Taxa de Juros é requerido.")
     private Double taxaJuros;
 
-    public ContaPoupancaDTO(Integer id, String numero, Integer idCliente, Double saldo, Double taxaJuros) {
+    public ContaPoupancaDTO(Integer id, Long numero, Integer idCliente, Double saldo, Double taxaJuros) {
         this.id = id;
         this.numero = numero;
         this.idCliente = idCliente;
@@ -45,11 +45,11 @@ public class ContaPoupancaDTO implements Serializable {
         this.id = id;
     }
 
-    public String getNumero() {
+    public Long getNumero() {
         return numero;
     }
 
-    public void setNumero(String numero) {
+    public void setNumero(Long numero) {
         this.numero = numero;
     }
 
